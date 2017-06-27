@@ -10,24 +10,18 @@ const setUser = require('./concerns/set-current-user')
 const setModel = require('./concerns/set-mongoose-model')
 
 const index = (req, res, next) => {
+  let carts = []
   Cart.find()
-    .then(carts => res.json({
-      carts: carts.map((e) =>
-      Product.find({},function(err,models){
-            console.log(models)
-             if (err) {
-                res.sendStatus(500)
-            } else {
-                res.json({
-                  carts,
-                  product: models
-                })
-              }
-            })
-          )}))
+    .then((cart) => {
+      for (let i = 0; i < cart.length; i++) {
+        carts = (cart[i].product)
+      }
+      res.json(carts)
+    })
+    .catch(next)
   // Cart.find()
-  //   .then(carts => res.json({
-  //     carts: carts.map((e) =>
+  //   .then(cart => res.json({
+  //     cart: cart.map((e) =>
   //       e.toJSON({ virtuals: true, user: req.user }))
   //   }))
   //   .catch(next)
@@ -45,11 +39,6 @@ const show = (req, res) => {
             })
           }
     })
-  // // console.log(Product.find({id: '5951976290fe850d650ae4c1'}))
-  // res.json({
-  //   cart: req.cart.product.toJSON({ virtuals: true, user: req.user })
-  //
-  // })
 }
 
 const create = (req, res, next) => {
