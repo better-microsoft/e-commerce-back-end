@@ -1,11 +1,5 @@
 #!/bin/sh
-
-API="http://localhost:4741"
-URL_PATH="/products"
-
-curl "${API}${URL_PATH}" \
-  --include \
-  --request GET \
-  --header "Authorization: Token token=$TOKEN"
-
-echo
+curl -X GET \
+  http://localhost:4741/products \
+  -H 'authorization: Token token=B3vDp2Ay310wxNjPx5EMecMSFmqnUnmnD98yeaLnsjs=--FXJqlTfi/3Xoj15rjF8wZhbMTHN2tkNZaN5ej+WAG4U=' \
+  -H 'cache-control: no-cache' \

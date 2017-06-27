@@ -14,11 +14,6 @@ const productSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true
-  },
-  _owner: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
   }
 }, {
   toJSON: {
