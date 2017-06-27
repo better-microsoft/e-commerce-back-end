@@ -3,12 +3,12 @@
 const mongoose = require('mongoose')
 
 const cartSchema = new mongoose.Schema({
-  _product: {
+  product: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
     required: true
   },
-  _owner: {
+  owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
@@ -23,10 +23,6 @@ const cartSchema = new mongoose.Schema({
       return ret
     }
   }
-})
-
-cartSchema.virtual('length').get(function length () {
-  return this.text.length
 })
 
 const Cart = mongoose.model('Cart', cartSchema)
