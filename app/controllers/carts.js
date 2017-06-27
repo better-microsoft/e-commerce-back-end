@@ -37,14 +37,14 @@ const create = (req, res, next) => {
 
 const update = (req, res, next) => {
   delete req.body._owner  // disallow owner reassignment.
-  req.cart.update(req.body.cart)
+  Cart.update(req.body.cart)
     .then(() => res.sendStatus(204))
     .catch(next)
 }
 
 const destroy = (req, res, next) => {
   console.log(req)
-  req.cart.remove()
+  Cart.remove()
     .then(() => res.sendStatus(204))
     .catch(next)
 }
@@ -56,8 +56,8 @@ module.exports = controller({
   update,
   destroy
 }, { before: [
-  { method: setUser, only: ['index', 'show'] },
-  { method: authenticate, except: ['index', 'show'] },
+  { method: setUser, only: ['index', 'show', 'create'] },
+  { method: authenticate, except: ['index', 'show', 'create'] },
   { method: setModel(Cart), only: ['show'] },
-  { method: setModel(Cart, { forUser: true }), only: ['update', 'destroy'] }
+  { method: setModel(Cart, { forUser: true }), only: ['destroy'] }
 ] })

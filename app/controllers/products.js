@@ -55,4 +55,4 @@ module.exports = controller({
   { before: [
     { method: setModel(Product), only: ['show'] }
   ]
-})
+  })
