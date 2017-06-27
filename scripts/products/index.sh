@@ -1,3 +1,3 @@
 #!/bin/sh
-curl -X GET \
+curl --include -X GET \
   http://localhost:4741/products \

@@ -3,6 +3,7 @@
 const controller = require('lib/wiring/controller')
 const models = require('app/models')
 const Cart = models.cart
+const Product = models.product
 
 const authenticate = require('./concerns/authenticate')
 const setUser = require('./concerns/set-current-user')
@@ -12,15 +13,43 @@ const index = (req, res, next) => {
   Cart.find()
     .then(carts => res.json({
       carts: carts.map((e) =>
-        e.toJSON({ virtuals: true, user: req.user }))
-    }))
-    .catch(next)
+      Product.find({},function(err,models){
+            console.log(models)
+             if (err) {
+                res.sendStatus(500)
+            } else {
+                res.json({
+                  carts,
+                  product: models
+                })
+              }
+            })
+          )}))
+  // Cart.find()
+  //   .then(carts => res.json({
+  //     carts: carts.map((e) =>
+  //       e.toJSON({ virtuals: true, user: req.user }))
+  //   }))
+  //   .catch(next)
 }
 
 const show = (req, res) => {
-  res.json({
-    cart: req.cart.toJSON({ virtuals: true, user: req.user })
-  })
+  Product.find({},function(err,models){
+        console.log(models)
+         if (err) {
+            res.sendStatus(500)
+        } else {
+            res.json({
+              cart: req.cart.toJSON({ virtuals: true, user: req.user }),
+              product: models
+            })
+          }
+    })
+  // // console.log(Product.find({id: '5951976290fe850d650ae4c1'}))
+  // res.json({
+  //   cart: req.cart.product.toJSON({ virtuals: true, user: req.user })
+  //
+  // })
 }
 
 const create = (req, res, next) => {
