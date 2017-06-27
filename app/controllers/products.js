@@ -12,33 +12,31 @@ const index = (req, res, next) => {
   Product.find()
     .then(products => res.json({
       products: products.map((e) =>
-        e.toJSON({ virtuals: true, user: req.user }))
+        e.toJSON({ virtuals: true}))
     }))
     .catch(next)
 }
 
 const show = (req, res) => {
+  console.log(req.product)
   res.json({
-    product: req.product.toJSON({ virtuals: true, user: req.user })
+    product: req.product.toJSON()
   })
 }
 
 const create = (req, res, next) => {
-  const product = Object.assign(req.body.product, {
-    _owner: req.user._id
-  })
-  Product.create(product)
+  console.log(req.body.product)
+  Product.create(req.body.product)
     .then(product =>
       res.status(201)
         .json({
-          product: product.toJSON({ virtuals: true, user: req.user })
+          product: product.toJSON({virtuals: true})
         }))
     .catch(next)
 }
 
 const update = (req, res, next) => {
-  delete req.body._owner  // disallow owner reassignment.
-  req.product.update(req.body.product)
+  Product.update(req.body.product)
     .then(() => res.sendStatus(204))
     .catch(next)
 }
@@ -55,9 +53,7 @@ module.exports = controller({
   create,
   update,
   destroy
-}, { before: [
-  { method: setUser, only: ['index', 'show'] },
-  { method: authenticate, except: ['index', 'show'] },
+},
+{ before: [
   { method: setModel(Product), only: ['show'] },
-  { method: setModel(Product, { forUser: true }), only: ['update', 'destroy'] }
 ] })

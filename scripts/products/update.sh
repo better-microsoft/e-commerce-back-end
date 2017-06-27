@@ -1,17 +1,10 @@
-#!/bin/bash
-
-API="http://localhost:4741"
-URL_PATH="/products"
-
-curl "${API}${URL_PATH}/${ID}" \
-  --include \
-  --request PATCH \
-  --header "Content-Type: application/json" \
-  --header "Authorization: Token token=${TOKEN}" \
-  --data '{
+curl --include -X PATCH \
+  http://localhost:4741/products/59529b50a182f007cc9d6001 \
+  -H 'content-type: application/json' \
+  -d '{
     "product": {
-      "text": "'"${TEXT}"'"
+      "name": "test111",
+      "price": 0,
+      "description": "test"
     }
-  }'
-
-echo
+}'
