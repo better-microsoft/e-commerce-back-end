@@ -4,15 +4,13 @@ const controller = require('lib/wiring/controller')
 const models = require('app/models')
 const Product = models.product
 
-const authenticate = require('./concerns/authenticate')
-const setUser = require('./concerns/set-current-user')
 const setModel = require('./concerns/set-mongoose-model')
 
 const index = (req, res, next) => {
   Product.find()
     .then(products => res.json({
       products: products.map((e) =>
-        e.toJSON({ virtuals: true}))
+        e.toJSON({virtuals: true}))
     }))
     .catch(next)
 }
@@ -42,7 +40,7 @@ const update = (req, res, next) => {
 }
 
 const destroy = (req, res, next) => {
-  req.product.remove()
+  Product.remove()
     .then(() => res.sendStatus(204))
     .catch(next)
 }
@@ -54,6 +52,7 @@ module.exports = controller({
   update,
   destroy
 },
-{ before: [
-  { method: setModel(Product), only: ['show'] },
-] })
+  { before: [
+    { method: setModel(Product), only: ['show'] }
+  ]
+})

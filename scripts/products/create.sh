@@ -1,4 +1,4 @@
-curl -X POST \
+curl --include -X POST \
   http://localhost:4741/products \
   -H 'content-type: application/json' \
   -d '{
