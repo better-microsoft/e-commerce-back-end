@@ -3,15 +3,19 @@
 const mongoose = require('mongoose')
 
 const cartSchema = new mongoose.Schema({
-  product: {
+  product: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
-    required: true
-  },
+    required: false
+  }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  stripe: {
+    type: String,
+    required: false
   }
 }, {
   timestamps: true,
