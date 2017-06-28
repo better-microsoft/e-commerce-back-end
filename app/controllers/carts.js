@@ -4,6 +4,7 @@ const controller = require('lib/wiring/controller')
 const models = require('app/models')
 const Cart = models.cart
 const Product = models.product
+// const User = models.user
 const ObjectId = require('mongoose').Types.ObjectId
 
 const authenticate = require('./concerns/authenticate')
@@ -12,27 +13,84 @@ const setModel = require('./concerns/set-mongoose-model')
 
 const index = (req, res, next) => {
   Cart.find()
-    .then(cart => res.json({
-      cart: cart.map((e) =>
+    .then(carts => res.json({
+      carts: carts.map((e) =>
         e.toJSON({ virtuals: true, user: req.user }))
-        .then()
     }))
     .catch(next)
 }
 
+const mycart = (req, res) => {
+  res.json({
+    cart: req.cart.toJSON({ virtuals: true, user: req.user })
+  })
+}
+  // Cart.find({},function(err,models){
+  // console.log(req.cart.owner)
+  //        if (err) {
+  //           res.sendStatus(500)
+  //       } else {
+  //           res.json({
+  //             models
+  //           })
+  //         }
+  //       })
+
+  // Cart.find({owner: ObjectId(req.cart.owner)},function(err,models){
+  //       console.log(req.cart.owner)
+  //        if (err) {
+  //           res.sendStatus(500)
+  //       } else {
+  //           res.json({
+  //             cart: req.cart.toJSON({ virtuals: true, user: req.user }),
+  //             product: models
+  //           })
+  //         }
+  //   })
+  //   .catch(next)
+  // User.find({_id: ObjectId(req.user)},function(err,models){
+  //       console.log(req.cart.owner)
+  //        if (err) {
+  //           res.sendStatus(500)
+  //       } else {
+  //           res.json({
+  //             cart: req.cart.toJSON({ virtuals: true, user: req.user }),
+  //             product: models
+  //           })
+  //         }
+  //   })
+  //  }
+
 const show = (req, res) => {
-  Product.find({_id: ObjectId(req.cart.product)},function(err,models){
+  const product = {}
+  product.array = []
+  for (let i = 0; i < req.cart.product.length; i++) {
+  Product.find({_id: ObjectId(req.cart.product[i])},function(err,products){
         console.log(req.cart.product)
          if (err) {
             res.sendStatus(500)
         } else {
-            res.json({
-              cart: req.cart.toJSON({ virtuals: true, user: req.user }),
-              product: models
-            })
-          }
-    })
-}
+              console.log(products)
+              product.array.push(products)
+            }
+          })
+        }
+          res.json({
+            cart: req.cart.toJSON({ virtuals: true, user: req.user }),
+            product: product.array
+          })
+    }
+    // Product.find({_id: ObjectId(req.cart.product[0])},function(err,products){
+    //       console.log(req.cart.product)
+    //        if (err) {
+    //           res.sendStatus(500)
+    //       } else {
+    //           res.json({
+    //             cart: req.cart.toJSON({ virtuals: true, user: req.user }),
+    //             product: products
+    //           })
+    //         }
+    //   })
 
 const create = (req, res, next) => {
   console.log(req.body.cart)
@@ -65,10 +123,11 @@ module.exports = controller({
   show,
   create,
   update,
-  destroy
+  destroy,
+  mycart
 }, { before: [
-  { method: setUser, only: ['index', 'show', 'create'] },
-  { method: authenticate, except: ['index', 'show', 'create'] },
-  { method: setModel(Cart), only: ['show'] },
+  { method: setUser, only: ['index', 'show', 'mycart', 'create'] },
+  { method: authenticate, except: ['index', 'show', 'mycart', 'create'] },
+  { method: setModel(Cart), only: ['show', 'mycart'] },
   { method: setModel(Cart, { forUser: true }), only: ['destroy'] }
 ] })
