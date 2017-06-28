@@ -4,32 +4,25 @@ const controller = require('lib/wiring/controller')
 const models = require('app/models')
 const Cart = models.cart
 const Product = models.product
+const ObjectId = require('mongoose').Types.ObjectId
 
 const authenticate = require('./concerns/authenticate')
 const setUser = require('./concerns/set-current-user')
 const setModel = require('./concerns/set-mongoose-model')
 
 const index = (req, res, next) => {
-  let carts = []
   Cart.find()
-    .then((cart) => {
-      for (let i = 0; i < cart.length; i++) {
-        carts = (cart[i].product)
-      }
-      res.json(carts)
-    })
+    .then(cart => res.json({
+      cart: cart.map((e) =>
+        e.toJSON({ virtuals: true, user: req.user }))
+        .then()
+    }))
     .catch(next)
-  // Cart.find()
-  //   .then(cart => res.json({
-  //     cart: cart.map((e) =>
-  //       e.toJSON({ virtuals: true, user: req.user }))
-  //   }))
-  //   .catch(next)
 }
 
 const show = (req, res) => {
-  Product.find({},function(err,models){
-        console.log(models)
+  Product.find({_id: ObjectId(req.cart.product)},function(err,models){
+        console.log(req.cart.product)
          if (err) {
             res.sendStatus(500)
         } else {
