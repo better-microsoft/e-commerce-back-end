@@ -13,10 +13,11 @@ const cartSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  stripe: {
-    type: String,
+  items: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Product',
     required: false
-  }
+  }]
 }, {
   timestamps: true,
   toJSON: {
