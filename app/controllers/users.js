@@ -108,13 +108,21 @@ const changepw = (req, res, next) => {
   ).catch(makeErrorHandler(res, next))
 }
 
+const update = (req, res, next) => {
+  console.log(req.body.user)
+  User.update(req.body.user)
+    .then(() => res.sendStatus(204))
+    .catch(next)
+}
+
 module.exports = controller({
   index,
   show,
   signup,
   signin,
   signout,
-  changepw
+  changepw,
+  update
 }, { before: [
   { method: authenticate, except: ['signup', 'signin'] }
 ] })

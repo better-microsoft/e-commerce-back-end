@@ -62,24 +62,29 @@ const mycart = (req, res) => {
   //  }
 
 const show = (req, res) => {
-  const product = {}
-  product.array = new Array()
-  console.log(req.cart.product[1])
-  for (let i = 0; i < req.cart.product.length; i++) {
-  Product.find({_id: ObjectId(req.cart.product[i])},function(err,products){
-         if (err) {
-            res.sendStatus(500)
-        } else {
-              product.array.push(products)
-              console.log(product.array)
-            }
-          })
-        }
-        req.cart.items = product.array
-          res.json({
-            cart: req.cart.toJSON({ virtuals: true, user: req.user })
-          })
-    }
+  console.log(req)
+  res.json({
+    cart: req.cart.toJSON({ virtuals: true, user: req.user })
+  })
+}
+  // const product = {}
+  // product.array = new Array()
+  // console.log(req.cart.product[1])
+  // for (let i = 0; i < req.cart.product.length; i++) {
+  // Product.find({_id: ObjectId(req.cart.product[i])},function(err,products){
+  //        if (err) {
+  //           res.sendStatus(500)
+  //       } else {
+  //             product.array.push(products)
+  //             console.log(product.array)
+  //           }
+  //         })
+  //       }
+  //       req.cart.items = product.array
+  //         res.json({
+  //           cart: req.cart.toJSON({ virtuals: true, user: req.user })
+  //         })
+  //   }
     // Product.find({_id: ObjectId(req.cart.product[0])},function(err,products){
     //       console.log(req.cart.product)
     //        if (err) {
@@ -106,7 +111,7 @@ const create = (req, res, next) => {
 
 const update = (req, res, next) => {
 //  req.body.cart.product.push('5952b57ea52d092b8d34c6b0')
-  console.log(req.body.cart.product)
+  console.log(req)
   delete req.body._owner  // disallow owner reassignment.
   Cart.update(req.body.cart)
     .then(() => res.sendStatus(204))
