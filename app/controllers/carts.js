@@ -111,7 +111,7 @@ const create = (req, res, next) => {
 
 const update = (req, res, next) => {
 //  req.body.cart.product.push('5952b57ea52d092b8d34c6b0')
-  console.log(req)
+  console.log(req.body.cart)
   delete req.body._owner  // disallow owner reassignment.
   Cart.update(req.body.cart)
     .then(() => res.sendStatus(204))
