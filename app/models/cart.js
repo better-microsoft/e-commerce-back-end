@@ -3,21 +3,15 @@
 const mongoose = require('mongoose')
 
 const cartSchema = new mongoose.Schema({
-  product: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
+  product: {
+    type: Array,
     required: false
-  }],
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  },
-  items: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
-    required: false
-  }]
+  }
 }, {
   timestamps: true,
   toJSON: {

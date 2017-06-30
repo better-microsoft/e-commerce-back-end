@@ -11,6 +11,15 @@ const authenticate = require('./concerns/authenticate')
 const setUser = require('./concerns/set-current-user')
 const setModel = require('./concerns/set-mongoose-model')
 
+const mycart = (req, res, next) => {
+  Cart.find()
+    .then(carts => res.json({
+      carts: carts.map((e) =>
+        e.toJSON({ virtuals: true, user: req.user }))
+    }))
+    .catch(next)
+}
+
 const index = (req, res, next) => {
   Cart.find()
     .then(carts => res.json({
@@ -20,82 +29,26 @@ const index = (req, res, next) => {
     .catch(next)
 }
 
-const mycart = (req, res) => {
-  res.json({
-    cart: req.cart.toJSON({ virtuals: true, user: req.user })
-  })
-}
-  // Cart.find({},function(err,models){
-  // console.log(req.cart.owner)
-  //        if (err) {
-  //           res.sendStatus(500)
-  //       } else {
-  //           res.json({
-  //             models
-  //           })
-  //         }
-  //       })
-
-  // Cart.find({owner: ObjectId(req.cart.owner)},function(err,models){
-  //       console.log(req.cart.owner)
-  //        if (err) {
-  //           res.sendStatus(500)
-  //       } else {
-  //           res.json({
-  //             cart: req.cart.toJSON({ virtuals: true, user: req.user }),
-  //             product: models
-  //           })
-  //         }
-  //   })
-  //   .catch(next)
-  // User.find({_id: ObjectId(req.user)},function(err,models){
-  //       console.log(req.cart.owner)
-  //        if (err) {
-  //           res.sendStatus(500)
-  //       } else {
-  //           res.json({
-  //             cart: req.cart.toJSON({ virtuals: true, user: req.user }),
-  //             product: models
-  //           })
-  //         }
-  //   })
-  //  }
-
 const show = (req, res) => {
-  console.log(req)
-  res.json({
-    cart: req.cart.toJSON({ virtuals: true, user: req.user })
+  const product = {}
+  product.array = []
+//  console.log(req.cart.product)
+  const promises = []
+  req.cart.product.forEach(function (id, i) {
+    promises.push(Product.find({_id: ObjectId(req.cart.product[i])}))
+  })
+  Promise.all(req.cart.product.map(function (id) {
+    return Product.find({_id: ObjectId(id)})
+  })).then(function (products) {
+    console.log(products)
+    req.cart.product = products
+    return res.json({
+      cart: req.cart.toJSON({virtuals: true, user: req.user})
+    })
+  }).catch(function (err) {
+    return res.sendStatus(500)
   })
 }
-  // const product = {}
-  // product.array = new Array()
-  // console.log(req.cart.product[1])
-  // for (let i = 0; i < req.cart.product.length; i++) {
-  // Product.find({_id: ObjectId(req.cart.product[i])},function(err,products){
-  //        if (err) {
-  //           res.sendStatus(500)
-  //       } else {
-  //             product.array.push(products)
-  //             console.log(product.array)
-  //           }
-  //         })
-  //       }
-  //       req.cart.items = product.array
-  //         res.json({
-  //           cart: req.cart.toJSON({ virtuals: true, user: req.user })
-  //         })
-  //   }
-    // Product.find({_id: ObjectId(req.cart.product[0])},function(err,products){
-    //       console.log(req.cart.product)
-    //        if (err) {
-    //           res.sendStatus(500)
-    //       } else {
-    //           res.json({
-    //             cart: req.cart.toJSON({ virtuals: true, user: req.user }),
-    //             product: products
-    //           })
-    //         }
-    //   })
 
 const create = (req, res, next) => {
   console.log(req.body.cart)
@@ -110,8 +63,7 @@ const create = (req, res, next) => {
 }
 
 const update = (req, res, next) => {
-//  req.body.cart.product.push('5952b57ea52d092b8d34c6b0')
-  console.log(req.body.cart)
+  console.log(req.body.cart.product)
   delete req.body._owner  // disallow owner reassignment.
   Cart.update(req.body.cart)
     .then(() => res.sendStatus(204))
