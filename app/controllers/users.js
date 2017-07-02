@@ -46,7 +46,7 @@ const makeErrorHandler = (res, next) =>
 
 const signup = (req, res, next) => {
   const credentials = req.body.credentials
-  const user = { email: credentials.email, password: credentials.password }
+  const user = { email: credentials.email, password: credentials.password, cartId: 'empty'}
   getToken()
     .then(token => {
       user.token = token
@@ -109,8 +109,8 @@ const changepw = (req, res, next) => {
 }
 
 const update = (req, res, next) => {
-  console.log(req.body.user)
-  User.update(req.body.user)
+  console.log(req.user)
+  User.update(req.user)
     .then(() => res.sendStatus(204))
     .catch(next)
 }

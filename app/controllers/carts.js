@@ -34,9 +34,7 @@ const show = (req, res) => {
   product.array = []
 //  console.log(req.cart.product)
   const promises = []
-  req.cart.product.forEach(function (id, i) {
-    promises.push(Product.find({_id: ObjectId(req.cart.product[i])}))
-  })
+
   Promise.all(req.cart.product.map(function (id) {
     return Product.find({_id: ObjectId(id)})
   })).then(function (products) {
@@ -51,24 +49,23 @@ const show = (req, res) => {
 }
 
 const create = (req, res, next) => {
-  console.log(req.body.cart)
+  console.log(req)
   const cart = Object.assign(req.body.cart)
   Cart.create(cart)
     .then(cart =>
       res.status(201)
         .json({
-          cart: cart.toJSON({ virtuals: true, user: req.user })
+          cart: cart.toJSON({ virtuals: true})
         }))
     .catch(next)
 }
 
 const update = (req, res, next) => {
-  console.log(req.body.cart.product)
   delete req.body._owner  // disallow owner reassignment.
   Cart.update(req.body.cart)
     .then(() => res.sendStatus(204))
     .catch(next)
-}
+    }
 
 const destroy = (req, res, next) => {
   console.log(req)
