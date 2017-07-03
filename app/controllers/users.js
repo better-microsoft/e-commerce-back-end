@@ -112,7 +112,7 @@ const update = (req, res, next) => {
   console.log(req.user.cartId)
   console.log(req.body.user.cartId)
   req.user.cartId = req.body.user.cartId
-  User.update({_id: req.user.id}, { $set: {cartId: req.body.user.cartId}})
+  User.update({_id: req.user.id}, {$set: {cartId: req.body.user.cartId}})
     .then(() => res.sendStatus(204))
     .catch(next)
 }

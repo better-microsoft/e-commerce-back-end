@@ -49,7 +49,7 @@ const show = (req, res) => {
 }
 
 const create = (req, res, next) => {
-  console.log(req)
+/  console.log(req.user)
   const cart = Object.assign(req.body.cart)
   Cart.create(cart)
     .then(cart =>
