@@ -10,7 +10,7 @@ module.exports = require('lib/wiring/routes')
 // standards RESTful routes
 .resources('examples')
 .resources('carts')
-.get('/mycart/:id', 'carts#mycart')
+.patch('/carts-decrease/:id', 'carts#remove')
 .resources('products')
 
 // users of the app have special requirements

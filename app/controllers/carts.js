@@ -11,15 +11,6 @@ const authenticate = require('./concerns/authenticate')
 const setUser = require('./concerns/set-current-user')
 const setModel = require('./concerns/set-mongoose-model')
 
-const mycart = (req, res, next) => {
-  Cart.find()
-    .then(carts => res.json({
-      carts: carts.map((e) =>
-        e.toJSON({ virtuals: true, user: req.user }))
-    }))
-    .catch(next)
-}
-
 const index = (req, res, next) => {
   Cart.find()
     .then(carts => res.json({
@@ -67,7 +58,19 @@ const update = (req, res, next) => {
   Cart.update({_id: req.user.cartId}, {$push: {product: req.body.cart.product}})
     .then(() => res.sendStatus(204))
     .catch(next)
-    }
+}
+
+const remove = (req, res, next) => {
+  console.log('here is the product id ' + req.body.cart.product)
+  console.log(req.user)
+  delete req.body._owner  // disallow owner reassignment.
+  Cart.update({_id: req.user.cartId}, {$unset: {product: req.body.cart.product}})
+.then(() => {
+  Cart.update({_id: req.user.cartId}, {$pull: {product: null}})
+})
+  .then(() => res.sendStatus(204))
+  .catch(next)
+}
 
 const destroy = (req, res, next) => {
   console.log(req)
@@ -82,10 +85,10 @@ module.exports = controller({
   create,
   update,
   destroy,
-  mycart
+  remove
 }, { before: [
   { method: setUser, only: ['index', 'show', 'mycart', 'create'] },
-  { method: authenticate, except: ['index', 'show', 'mycart', 'create'] },
-  { method: setModel(Cart), only: ['show', 'mycart'] },
+  { method: authenticate, except: ['index', 'show', 'create'] },
+  { method: setModel(Cart), only: ['show'] },
   { method: setModel(Cart, { forUser: true }), only: ['destroy'] }
 ] })
