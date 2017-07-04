@@ -62,15 +62,37 @@ const update = (req, res, next) => {
 
 const remove = (req, res, next) => {
   console.log('here is the product id ' + req.body.cart.product)
-  console.log(req.user)
-  delete req.body._owner  // disallow owner reassignment.
-  Cart.update({_id: req.user.cartId}, {$unset: {product: req.body.cart.product}})
-.then(() => {
-  Cart.update({_id: req.user.cartId}, {$pull: {product: null}})
-})
-  .then(() => res.sendStatus(204))
-  .catch(next)
+  console.log('here is the owner id ' + req.user.cartId)
+//  delete req.body._owner // disallow owner reassignment.
+  Cart.update(
+    { _id: req.user.cartId },
+    { $pull: { product: req.body.cart.product }}
+)
+.then(() => res.sendStatus(204))
+.catch(next)
 }
+  // Cart.find({_id: req.user.cartId})
+  // .then((products1) => {
+  //   console.log("array of products: " + products1[0].product)
+  //   const index = products1[0].product.indexOf(req.body.cart.product)
+  //   console.log("index valeu: " + index)
+  //   if (index > -1) {
+  //     products1[0].product.splice(index, 1)
+  //     return products1[0].product
+  //   }
+  //   return products1[0].product
+  // })
+  // .then((products2) => {
+  //   console.log('Second Promise Input: ' + products2)
+  //   Cart.update({_id: req.user.cartId}, {$set: {product: products2}})
+  // })
+  // .then(() => res.sendStatus(204))
+  // .catch(next)
+  // }
+//   Cart.update({_id: req.user.cartId}, {$pop: {product: req.body.cart.product}})
+//     .then(() => res.sendStatus(204))
+//     .catch(next)
+// }
 
 const destroy = (req, res, next) => {
   console.log(req)
