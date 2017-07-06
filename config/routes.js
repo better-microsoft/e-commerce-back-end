@@ -12,6 +12,7 @@ module.exports = require('lib/wiring/routes')
 .resources('carts')
 .patch('/carts-decrease/:id', 'carts#remove')
 .resources('products')
+.resources('transactions')
 
 // users of the app have special requirements
 .post('/sign-up', 'users#signup')

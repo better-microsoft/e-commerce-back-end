@@ -35,6 +35,7 @@ const show = (req, res) => {
       cart: req.cart.toJSON({virtuals: true, user: req.user})
     })
   }).catch(function (err) {
+    console.log(err)
     return res.sendStatus(500)
   })
 }
@@ -46,7 +47,7 @@ const create = (req, res, next) => {
     .then(cart =>
       res.status(201)
         .json({
-          cart: cart.toJSON({ virtuals: true})
+          cart: cart.toJSON({virtuals: true})
         }))
     .catch(next)
 }
@@ -66,8 +67,8 @@ const remove = (req, res, next) => {
 //  delete req.body._owner // disallow owner reassignment.
   Cart.update(
     { _id: req.user.cartId },
-    { $pull: { product: req.body.cart.product }}
-)
+    {$pull: { product: req.body.cart.product }}
+  )
 .then(() => res.sendStatus(204))
 .catch(next)
 }
