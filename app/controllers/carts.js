@@ -72,24 +72,24 @@ const remove = (req, res, next) => {
 .then(() => res.sendStatus(204))
 .catch(next)
 }
-  // Cart.find({_id: req.user.cartId})
-  // .then((products1) => {
-  //   console.log("array of products: " + products1[0].product)
-  //   const index = products1[0].product.indexOf(req.body.cart.product)
-  //   console.log("index valeu: " + index)
-  //   if (index > -1) {
-  //     products1[0].product.splice(index, 1)
-  //     return products1[0].product
-  //   }
-  //   return products1[0].product
-  // })
-  // .then((products2) => {
-  //   console.log('Second Promise Input: ' + products2)
-  //   Cart.update({_id: req.user.cartId}, {$set: {product: products2}})
-  // })
-  // .then(() => res.sendStatus(204))
-  // .catch(next)
-  // }
+//   Cart.find({_id: req.user.cartId})
+//   .then((products1) => {
+//     console.log("array of products: " + products1[0].product)
+//     const index = products1[0].product.indexOf(req.body.cart.product)
+//     console.log("index valeu: " + index)
+//     if (index > -1) {
+//       products1[0].product.splice(index, 1)
+//       return products1[0].product
+//     }
+//     return products1[0].product
+//   })
+//   .then((products2) => {
+//     console.log('Second Promise Input: ' + products2)
+//     Cart.update({_id: req.user.cartId}, {$set: {product: products2}})
+//   })
+//   .then(() => res.sendStatus(204))
+//   .catch(next)
+//   }
 //   Cart.update({_id: req.user.cartId}, {$pop: {product: req.body.cart.product}})
 //     .then(() => res.sendStatus(204))
 //     .catch(next)
