@@ -8,6 +8,27 @@ const authenticate = require('./concerns/authenticate')
 const setUser = require('./concerns/set-current-user')
 const setModel = require('./concerns/set-mongoose-model')
 
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+const amount = 500
+const charge = (req, res) => {
+  stripe.customers.create({
+    email: req.body.email,
+    card: req.body.id
+  })
+  .then(customer =>
+    stripe.charges.create({
+      amount,
+      description: 'Sample Charge',
+      currency: 'usd',
+      customer: customer.id
+    }))
+  .then(charge => res.send(charge))
+  .catch(err => {
+    console.log('Error:', err)
+    res.status(500).send({error: 'Purchase Failed'})
+  })
+}
+
 const index = (req, res, next) => {
   Transaction.find()
     .then(transactions => res.json({
@@ -54,7 +75,8 @@ module.exports = controller({
   show,
   create,
   update,
-  destroy
+  destroy,
+  charge
 }, { before: [
   { method: setUser, only: ['index', 'show'] },
   { method: authenticate, except: ['index', 'show'] },

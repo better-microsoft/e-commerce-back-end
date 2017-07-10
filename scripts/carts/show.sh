@@ -1,5 +1,5 @@
 curl --include -X GET \
-  http://localhost:4741/carts/5953b153d2108941d15a7fe9 \
-  -H 'authorization: Token token=B3vDp2Ay310wxNjPx5EMecMSFmqnUnmnD98yeaLnsjs=--FXJqlTfi/3Xoj15rjF8wZhbMTHN2tkNZaN5ej+WAG4U=' \
+http://localhost:4741/carts/595fa3d0fd1dda6483e2632d \
+-H 'authorization: Token token=c8BR5P0o71+gqX8FkLTIpRCD9X/mZTtcopXnDbrf5TI=--9YOE07xPkSC9JAQKsHQdlOCcCRzqJhwlDgOZBPcteXY=' \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
