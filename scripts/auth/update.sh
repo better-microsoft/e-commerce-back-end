@@ -1,9 +1,9 @@
 curl --include -X PATCH \
-  http://localhost:4741/users/595fa346fd1dda6483e2632c \
-  -H 'authorization: Token token=/tXWDavlv4CRJNDojAwJatOrJ5vtqHc2WbcuSV/h1H8=--wo9OFQSZ7ZNHRcdWkA+UBhj/roobBmgDtFbU8wMoTRI=' \
+  http://localhost:4741/users/5962f694dcd80d5a0871e399 \
+  -H 'authorization: Token token=2qD/pw0rqWPSAuR9Z1tsrCs4gHJljdrykpnTQLJmoVk=--9N1beh1KJSKLJ2Am9xpW9gZVMaEmaC1WfsZ1lMO8ThE=' \
   -H 'content-type: application/json' \
   -d '{
       "user": {
-        "cartId": "5962e36b72bd303724ada036"
+        "cartId": "5962f6c7dcd80d5a0871e39a"
       }
     }'

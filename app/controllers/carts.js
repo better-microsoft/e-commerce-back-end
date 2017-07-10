@@ -83,12 +83,18 @@ const remove = (req, res, next) => {
     }
     return products1[0].product
   })
+  .then((products1) => {
+    Cart.update(
+      {_id: req.user.cartId},
+      {$set: {product: []}}
+    )
+    return products1
+  })
   .then((products2) => {
     console.log('Second Promise Input: ' + products2)
     return Cart.update(
-      {"_id": req.user.cartId},
-      {$push: {product: "executed"}},
-      {safe: true, new: true}
+      {_id: req.user.cartId},
+      {$set: {product: products2}}
     )
   })
   .then(() => res.sendStatus(204))
