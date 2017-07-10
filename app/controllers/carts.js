@@ -61,34 +61,39 @@ const update = (req, res, next) => {
 }
 
 const remove = (req, res, next) => {
-  console.log('here is the product id ' + req.body.cart.product)
+  console.log('here is the cart id ' + req.user.cartId)
   console.log('here is the owner id ' + req.user.cartId)
+  const index = 0
 //  delete req.body._owner // disallow owner reassignment.
-  Cart.update(
-    { _id: req.user.cartId },
-    {$pull: { product: req.body.cart.product }}
-  )
-.then(() => res.sendStatus(204))
-.catch(next)
-}
-//   Cart.find({_id: req.user.cartId})
-//   .then((products1) => {
-//     console.log("array of products: " + products1[0].product)
-//     const index = products1[0].product.indexOf(req.body.cart.product)
-//     console.log("index valeu: " + index)
-//     if (index > -1) {
-//       products1[0].product.splice(index, 1)
-//       return products1[0].product
-//     }
-//     return products1[0].product
-//   })
-//   .then((products2) => {
-//     console.log('Second Promise Input: ' + products2)
-//     Cart.update({_id: req.user.cartId}, {$set: {product: products2}})
-//   })
-//   .then(() => res.sendStatus(204))
-//   .catch(next)
-//   }
+//   Cart.update(
+//     { _id: req.user.cartId },
+//     {$unset: {"product.0": 1}}
+//   )
+// .then(() => res.sendStatus(204))
+// .catch(next)
+// }
+  Cart.find({_id: req.user.cartId})
+  .then((products1) => {
+    console.log("array of products: " + products1[0].product)
+    const index = 1
+    console.log("index valeu: " + index)
+    if (index > -1) {
+      products1[0].product.splice(index, 1)
+      return products1[0].product
+    }
+    return products1[0].product
+  })
+  .then((products2) => {
+    console.log('Second Promise Input: ' + products2)
+    return Cart.update(
+      {"_id": req.user.cartId},
+      {$push: {product: "executed"}},
+      {safe: true, new: true}
+    )
+  })
+  .then(() => res.sendStatus(204))
+  .catch(next)
+  }
 //   Cart.update({_id: req.user.cartId}, {$pop: {product: req.body.cart.product}})
 //     .then(() => res.sendStatus(204))
 //     .catch(next)
