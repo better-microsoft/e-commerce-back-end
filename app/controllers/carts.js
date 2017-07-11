@@ -63,7 +63,6 @@ const update = (req, res, next) => {
 const remove = (req, res, next) => {
   console.log('here is the cart id ' + req.user.cartId)
   console.log('here is the owner id ' + req.user.cartId)
-  const index = 0
 //  delete req.body._owner // disallow owner reassignment.
 //   Cart.update(
 //     { _id: req.user.cartId },
@@ -75,7 +74,8 @@ const remove = (req, res, next) => {
   Cart.find({_id: req.user.cartId})
   .then((products1) => {
     console.log("array of products: " + products1[0].product)
-    const index = 1
+    console.log(req.body.cart.index)
+    const index = req.body.cart.index
     console.log("index valeu: " + index)
     if (index > -1) {
       products1[0].product.splice(index, 1)
