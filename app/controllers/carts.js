@@ -55,10 +55,14 @@ const create = (req, res, next) => {
 const update = (req, res, next) => {
   console.log('here is the product id ' + req.body.cart.product)
   console.log(req.user)
-  Cart.update({_id: req.user.cartId}, {$push: {product: req.body.cart.product}})
-    .then(() => res.sendStatus(204))
+  return Cart.update({_id: req.user.cartId}, {$push: {product: req.body.cart.product}})
+    .then((data) => {
+      console.log(data)
+      res.sendStatus(204)
+    })
     .catch(next)
 }
+// 596529486e850b0e6d77c1d9
 
 const remove = (req, res, next) => {
   console.log('here is the cart id ' + req.user.cartId)
