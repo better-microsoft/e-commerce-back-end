@@ -7,6 +7,7 @@ const Transaction = models.transaction
 const authenticate = require('./concerns/authenticate')
 const setUser = require('./concerns/set-current-user')
 const setModel = require('./concerns/set-mongoose-model')
+const ObjectId = require('mongoose').Types.ObjectId
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const amount = 500
@@ -30,7 +31,8 @@ const charge = (req, res) => {
 }
 
 const index = (req, res, next) => {
-  Transaction.find()
+  console.log('owner: ' + req.user)
+  Transaction.find({owner: ObjectId(req.user.id)})
     .then(transactions => res.json({
       transactions: transactions.map((e) =>
         e.toJSON({ virtuals: true, user: req.user }))
