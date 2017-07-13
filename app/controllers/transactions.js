@@ -35,8 +35,9 @@ const index = (req, res, next) => {
   Transaction.find({owner: ObjectId(req.user.id)})
     .then(transactions => res.json({
       transactions: transactions.map((e) =>
-        e.toJSON({ virtuals: true, user: req.user }))
+      e.toJSON({ virtuals: true, user: req.user }))
     }))
+
     .catch(next)
 }
 
@@ -47,6 +48,7 @@ const show = (req, res) => {
 }
 
 const create = (req, res, next) => {
+  console.log('Heres the object: ' + req.body.transaction)
   const transaction = Object.assign(req.body.transaction, {
     _owner: req.user._id
   })
