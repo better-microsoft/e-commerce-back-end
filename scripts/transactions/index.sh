@@ -9,7 +9,7 @@ curl "${API}${URL_PATH}" \
   --header "Authorization: Token token=8+O/qn2kKIU22SEj2x6yE+AfxZFIbGSnlXVx9HLBim4=--yCQRSYXDrrpAIpJNtuITk/qW30HVYUyEu7AgaGylQCo=" \
   --data '{
     "transaction": {
-      "owner": "59514c37a1294279f80febeb"
+      "owner": "596802670b1f833b2bab2ace"
     }
   }'
 

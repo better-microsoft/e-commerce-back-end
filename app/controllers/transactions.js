@@ -32,8 +32,11 @@ const charge = (req, res) => {
 
 const index = (req, res, next) => {
   console.log('owner: ' + req.user)
-  Transaction.find({owner: ObjectId(req.user.id)})
-    .then(transactions => res.json({
+  return Transaction.find({owner: ObjectId(req.user.id)})
+  // return Transaction.find()
+    .then((transactions) =>
+    // console.log(transactions)
+    res.json({
       transactions: transactions.map((e) =>
       e.toJSON({ virtuals: true, user: req.user }))
     }))
