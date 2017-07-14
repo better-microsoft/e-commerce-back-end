@@ -3,8 +3,8 @@ curl --include -X POST \
   -H 'content-type: application/json' \
   -d '{
     "product": {
-      "name": "test00000",
-      "price": 0,
-      "description": "test"
+      "name": "test10000",
+      "price": 10,
+      "description": "test10"
     }
 }'
