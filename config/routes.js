@@ -11,7 +11,8 @@ module.exports = require('lib/wiring/routes')
 .resources('examples')
 .resources('carts')
 .patch('/carts-decrease/:id', 'carts#remove')
-.resources('products')
+.resources('products', { only: ['index', 'show'] })
+    // product routes create, update, and delete removed for production
 .resources('transactions')
 .post('/charge', 'transactions#charge')
 
